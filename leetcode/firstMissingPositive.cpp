@@ -1,0 +1,106 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+//typedef tree<ll, null_type, less<ll>, rb_tree_tag, tree_order_statistics_node_update> pbds;
+//typedef trie<string,null_type,trie_string_access_traits<>,pat_trie_tag,trie_prefix_search_node_update> pbtrie;
+
+#define ll                       long long int
+#define ld                       long double
+#define mod                      1000000007
+#define inf                      1e18
+#define endl                     "\n"
+#define pb                       push_back
+#define vi                       vector<ll>
+#define vvi                      vector<vector<ll>>
+#define vs                       vector<string>
+#define pii                      pair<ll,ll>
+#define ump                      unordered_map
+#define us                       unordered_set
+#define mp                       make_pair
+#define pq_max                   priority_queue<ll>
+#define pq_min                   priority_queue<ll,vi,greater<ll> >
+#define all(n)                   n.begin(),n.end()
+#define ff                       first
+#define ss                       second
+#define mid(l,r)                 (l+(r-l)/2)
+#define bitc(n)                  __builtin_popcount(n)
+#define SET(a)                   memset( a, -1, sizeof a )
+#define CLR(a)                   memset( a,  0, sizeof a )
+#define Pi                       3.141592653589793
+#define loop(i,a,b)              for(int i=(a);i<=(b);i++)
+#define looprev(i,a,b)           for(int i=(a);i>=(b);i--)
+#define _fast                    ios_base::sync_with_stdio(0);  cin.tie(0);
+#define iter(container,it)       for(__typeof(container.begin()) it = container.begin(); it != container.end(); it++)
+#define log(args...)             {string _s = #args; replace(_s.begin(), _s.end(), ',', ' '); stringstream _ss(_s); istream_iterator<string> _it(_ss); err(_it, args); }
+#define logarr(arr,a,b)          for(int z=(a);z<=(b);z++) cout<<(arr[z])<<" ";cout<<endl;
+template <typename T> T          gcd(T a, T b){if(a%b) return gcd(b,a%b);return b;}
+template <typename T> T          lcm(T a, T b){return (a*(b/gcd(a,b)));}
+vs tokenizer(string str,char ch) {std::istringstream var((str)); vs v; string t; while(getline((var), t, (ch))) {v.pb(t);} return v;}
+
+void err(istream_iterator<string> it) {}
+template<typename T, typename... Args>
+void err(istream_iterator<string> it, T a, Args... args) {
+cout << *it << " = " << a << endl;
+err(++it, args...);
+}
+
+// TC - o(n) ; SC - o(n) 
+
+int firstMissingPositive(vector<int> nums){
+
+    map<int,int> numcnt;
+
+    for (int i = 0;i<nums.size();i++){
+        numcnt[nums[i]] += 1;
+    }
+
+    int num = 1;
+    for(auto pr: numcnt){
+        if(pr.first < 1){
+            continue;
+        }
+        if(pr.first!=num){
+            return num;
+        }
+        num++;  
+    }
+    return num;
+}
+
+// TC - o(n)  ; SC-O(1)
+int firstMissingPos(vector<int> nums){
+    bool  contains_one = false;
+
+    for (int n : nums){
+        if(n==1){
+            contains_one = true;
+            break;
+        }
+    }
+    if(!contains_one) return 1;
+
+    int n = nums.size();
+    if(n==1) return 2;
+
+    for (int i = 0; i<n ; i++){
+        if (nums[i]<1 or nums[i]>n){
+            nums[i] = 1;
+        }
+    }
+
+    for (int i =0;i<n;i++){
+        int x = abs(nums[i]);
+        if(nums[x-1] > 0) nums[x-1] *= -1; 
+    }
+    for (int i =0;i<n;i++){
+        if(nums[i]>0) return i+1;
+    }
+    return n+1;
+}
+
+int main(int argc, char const *argv[]){
+    _fast
+    vector<int> arr{1,2,0};
+    cout << firstMissingPos(arr);
+    return 0;
+}

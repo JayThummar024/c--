@@ -1,0 +1,1 @@
+{"name":"Local: 1stNonrReapChar","url":"c:\\Users\\Jay Thummar\\Desktop\\c++\\1stNonrReapChar.cpp","tests":[{"id":1628700364676,"input":"q\nw\nq\na\nw\nb\nc\n0","output":"q\nq\nw\nw\na\na\na"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\Jay Thummar\\Desktop\\c++\\1stNonrReapChar.cpp","group":"local","local":true}

@@ -1,0 +1,1 @@
+{"name":"Local: alphaCode","url":"c:\\Users\\Jay Thummar\\Desktop\\c++\\alphaCode.cpp","tests":[{"id":1629468873318,"input":"25114\n1111111111\n3333333333\n10616\n10606\n0","output":"6\n89\n1"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\Jay Thummar\\Desktop\\c++\\alphaCode.cpp","group":"local","local":true}
