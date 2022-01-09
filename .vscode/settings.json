@@ -3,7 +3,15 @@
         "iostream": "cpp",
         "bitset": "cpp",
         "functional": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "string": "cpp",
+        "*.tcc": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp"
     },
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": true,
+    "C_Cpp.errorSquiggles": "Disabled"
 }
