@@ -1,4 +1,3 @@
-
 #include<bits/stdc++.h>
 using namespace std;
 //typedef tree<ll, null_type, less<ll>, rb_tree_tag, tree_order_statistics_node_update> pbds;
@@ -44,72 +43,43 @@ cout << *it << " = " << a << endl;
 err(++it, args...);
 }
 
-bool isSafe(vector<vector<string>> mat,int i,int j,int no,int n){
-    for(int k=0;k<9;k++){
-        if(mat[i][k]==to_string(no) || mat[k][j]==to_string(no)){
-            return false;
-        }
+
+int  cntSubset(vector<int> &nums,int n,int cnt , vector<vector<int>> &dp){
+    for(int i=0;i<=cnt;i++){
+        dp[0][i]=0;
     }
-    int sx = (i/3)*3;
-    int sy = (j/3)*3;
-    for(int x=sx;x<(sx+3);x++){
-        for(int y=sy;y<(sy+3);y++){
-            if(mat[x][y]==to_string(no)){
-                return false;
+    for(int i=0;i<=n;i++){
+        dp[i][0]=1;
+    }
+    for(int i=1;i<=n;i++){
+        for(int j=0;j<=cnt;j++){
+            if(nums[i-1]<=j){
+                dp[i][j] = dp[i-1][j-nums[i-1]] + dp[i-1][j];
+            }else{
+                dp[i][j] = dp[i-1][j];
             }
         }
     }
-    return true;
+    return dp[n][cnt];
 }
-
-
-
-bool solveSudoku(vector<vector<string>> &mat,int i,int j,int n){
-    if(i==n) {
-        for(int i=0;i<9;i++){
-            for(int j=0;j<9;j++){
-                cout<<mat[i][j]<<" - ";
-            }
-            cout<<"\n\n";
-        }
-        return true;
-    };
-    
-    if(j==n){
-       return solveSudoku(mat,i+1,0,n);
-    }
-
-    if(mat[i][j]!="."){
-        return solveSudoku(mat,i,j+1,n);
-    }
-
-    for(int no=1;no<=n;no++){
-        if(isSafe(mat,i,j,no,n)){
-            mat[i][j]=to_string(no);
-            bool solveSubProb = solveSudoku(mat,i,j+1,n);
-            if(solveSubProb==true) return true;
-        }
-    }
-    mat[i][j]=".";
-    return false;
-}
-
 
 int main(){
-    _fast
-    int n=9;
-    vector<vector<string>> mat=
-    {
-        {".",".",".",".","7",".","5","6","8"},
-        {".","8","1",".",".",".",".",".","3"},
-        {"7","2",".",".",".",".",".",".","."},
-        {"1",".",".",".","4","6",".",".","."},
-        {".","7","4","5",".","3","2","9","."},
-        {".",".",".","2","9",".",".",".","4"},
-        {".",".",".",".",".",".",".","7","5"},
-        {"2",".",".",".",".",".","1","3","."},
-        {"3","5","7",".","6",".",".",".","."}
-    };
-    solveSudoku(mat,0,0,n);
+
+    vector<int> nums{0,0,0,0,0,0,0,0,1};
+    int target = 1;
+    int n = nums.size();
+
+    int sum=0;
+    for(auto n:nums){
+        sum+=n;
+    }
+    int cnt = ((sum + target)/2);
+    vector<vector<int>> dp(n+1 , vector<int> (cnt+1 , 0));
+    
+    if(sum<target || (sum+target)%2 !=0){
+        cout<<0<<endl;
+    }else{
+        cout<< cntSubset(nums,n,cnt,dp)<<endl;
+    }
     return 0;
 }

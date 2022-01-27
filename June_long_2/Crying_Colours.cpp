@@ -43,73 +43,28 @@ void err(istream_iterator<string> it, T a, Args... args) {
 cout << *it << " = " << a << endl;
 err(++it, args...);
 }
-
-bool isSafe(vector<vector<string>> mat,int i,int j,int no,int n){
-    for(int k=0;k<9;k++){
-        if(mat[i][k]==to_string(no) || mat[k][j]==to_string(no)){
-            return false;
+void solve(){
+    int n;
+    cin>>n;
+    int arr[3][3];
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            cin>>arr[i][j];
         }
     }
-    int sx = (i/3)*3;
-    int sy = (j/3)*3;
-    for(int x=sx;x<(sx+3);x++){
-        for(int y=sy;y<(sy+3);y++){
-            if(mat[x][y]==to_string(no)){
-                return false;
-            }
-        }
-    }
-    return true;
+    int ans;
+    ans = (n-arr[0][0])+(n-arr[2][2]) - (min(arr[0][2],arr[2][0]));
+    cout<<ans<<endl;
 }
-
-
-
-bool solveSudoku(vector<vector<string>> &mat,int i,int j,int n){
-    if(i==n) {
-        for(int i=0;i<9;i++){
-            for(int j=0;j<9;j++){
-                cout<<mat[i][j]<<" - ";
-            }
-            cout<<"\n\n";
-        }
-        return true;
-    };
-    
-    if(j==n){
-       return solveSudoku(mat,i+1,0,n);
-    }
-
-    if(mat[i][j]!="."){
-        return solveSudoku(mat,i,j+1,n);
-    }
-
-    for(int no=1;no<=n;no++){
-        if(isSafe(mat,i,j,no,n)){
-            mat[i][j]=to_string(no);
-            bool solveSubProb = solveSudoku(mat,i,j+1,n);
-            if(solveSubProb==true) return true;
-        }
-    }
-    mat[i][j]=".";
-    return false;
-}
-
 
 int main(){
     _fast
-    int n=9;
-    vector<vector<string>> mat=
-    {
-        {".",".",".",".","7",".","5","6","8"},
-        {".","8","1",".",".",".",".",".","3"},
-        {"7","2",".",".",".",".",".",".","."},
-        {"1",".",".",".","4","6",".",".","."},
-        {".","7","4","5",".","3","2","9","."},
-        {".",".",".","2","9",".",".",".","4"},
-        {".",".",".",".",".",".",".","7","5"},
-        {"2",".",".",".",".",".","1","3","."},
-        {"3","5","7",".","6",".",".",".","."}
-    };
-    solveSudoku(mat,0,0,n);
+    int t;
+    cin>>t;
+    
+    while(t--){
+        solve();
+    }
+
     return 0;
 }

@@ -44,72 +44,64 @@ cout << *it << " = " << a << endl;
 err(++it, args...);
 }
 
-bool isSafe(vector<vector<string>> mat,int i,int j,int no,int n){
-    for(int k=0;k<9;k++){
-        if(mat[i][k]==to_string(no) || mat[k][j]==to_string(no)){
-            return false;
-        }
-    }
-    int sx = (i/3)*3;
-    int sy = (j/3)*3;
-    for(int x=sx;x<(sx+3);x++){
-        for(int y=sy;y<(sy+3);y++){
-            if(mat[x][y]==to_string(no)){
-                return false;
+vector<int> calc(vector<int> primeSet,int M){
+    vector<int> valueSet= {1};
+    for(int x : primeSet){
+        for(int i=0;i< (int)valueSet.size();i++){
+            if( x*valueSet[i] <= M ){
+                valueSet.push_back(x*valueSet[i]);
             }
         }
     }
-    return true;
+    return valueSet;
 }
 
 
+void solve(){
 
-bool solveSudoku(vector<vector<string>> &mat,int i,int j,int n){
-    if(i==n) {
-        for(int i=0;i<9;i++){
-            for(int j=0;j<9;j++){
-                cout<<mat[i][j]<<" - ";
-            }
-            cout<<"\n\n";
+    int N,M;
+    cin>>N>>M;
+    vector<int> primes(N);
+    for(int i=0;i<N;i++){
+        cin>>primes[i];
+    }
+
+    sort(primes.begin(),primes.end());
+    vector<int> primeSet1,primeSet2;
+    for(int i=0;i<n;i++){
+        if(i&1) primeSet1.push_back(primes[i]);
+        else primeSet2.push_back(primes[i]);
+    }
+
+    vector<int> valueSet1 = calc(primeSet1,m);
+    vector<int> valueSet2 = calc(primeSet2,m);
+
+    sort(valueSet1.begin(),valueSet1.end());
+    sort(valueSet2.begin(),valueSet2.end());
+
+    int ans = 0, len1 = valueSet1.size() , len2 = valueSet2.size();
+    int start = 0;
+    int end = len2-1;
+
+    while(start<len1 and end>=0){
+        if(valueSet1[start]*valueSet2[end] <= m){
+            ans += (end+1);
+            start++;
         }
-        return true;
-    };
-    
-    if(j==n){
-       return solveSudoku(mat,i+1,0,n);
-    }
-
-    if(mat[i][j]!="."){
-        return solveSudoku(mat,i,j+1,n);
-    }
-
-    for(int no=1;no<=n;no++){
-        if(isSafe(mat,i,j,no,n)){
-            mat[i][j]=to_string(no);
-            bool solveSubProb = solveSudoku(mat,i,j+1,n);
-            if(solveSubProb==true) return true;
+        else{
+            end--;
         }
     }
-    mat[i][j]=".";
-    return false;
+    cout<< ans <<endl;
 }
 
 
 int main(){
     _fast
-    int n=9;
-    vector<vector<string>> mat=
-    {
-        {".",".",".",".","7",".","5","6","8"},
-        {".","8","1",".",".",".",".",".","3"},
-        {"7","2",".",".",".",".",".",".","."},
-        {"1",".",".",".","4","6",".",".","."},
-        {".","7","4","5",".","3","2","9","."},
-        {".",".",".","2","9",".",".",".","4"},
-        {".",".",".",".",".",".",".","7","5"},
-        {"2",".",".",".",".",".","1","3","."},
-        {"3","5","7",".","6",".",".",".","."}
-    };
-    solveSudoku(mat,0,0,n);
+    int t;
+    cin>>t;
+    while(t--){
+        solve();
+    }
     return 0;
 }

@@ -18,6 +18,12 @@ struct Node{
     void increaseStart(){
         cntStartsWith++;
     }
+    void reduceStart(){
+        cntStartsWith--;
+    }
+    void reduceEnd(){
+        cntEndsWith++;
+    }
     Node *get(char ch){
         return links[ch - 'a'];
     }
@@ -41,11 +47,11 @@ class Trie{
         for(int i=0;i<word.length();i++){
             if(!node->containsKey(word[i])){
                 node->put(new Node(),word[i]);
-                node->cntStartsWith();
             }
             node = node->get(word[i]);
+            node->increaseStart();
         }
-        node->cntEndsWith();
+        node->increaseEnd();
         node->setEnd();
     }
 
@@ -71,18 +77,40 @@ class Trie{
         return true;
     }
 
+    int countWordsEqualTo(string word){
+        Node *node = root;
+        for(int i=0;i<word.length();i++){
+             if(!node->containsKey(word[i])){
+                return 0;
+            }
+            node = node->get(word[i]);
+        }
+        return node->cntEndsWith;
+    }
+
+    int countWordsStartingWith(string word){
+        Node *node = root;
+        for(int i=0;i<word.length();i++){
+             if(!node->containsKey(word[i])){
+                return 0;
+            }
+            node = node->get(word[i]);
+        }
+        return node->cntStartsWith;
+    }
 };
 
 int main(){
     Trie root = Trie();
 
-    // string s = "apple";
-    // root.insert(s);
-    // root.insert("app");
-    // root.insert("apx");
-    // cout<<root.search("apple")<<endl;
-    // cout<<root.startsWith("app")<<endl;
-
+    string s = "apple";
+    root.insert(s);
+    root.insert("apple");
+    root.insert("app");
+    root.insert("apple");
+    cout<<root.countWordsEqualTo("app")<<endl;
+    cout<<root.countWordsEqualTo("apple")<<endl;
+    cout<<root.countWordsStartingWith("app")<<endl;
 
     return 0;
 }
