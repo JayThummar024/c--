@@ -36,16 +36,35 @@ int LCS_tabulation(string X,string Y,int i,int j){// Accepted in leetcode
     return dp[i][j];
 }
 
+string LCS_print(string X,string Y,int i,int j){
+    string ans = "";
+    while(i!=0 and j!=0){
+        if(X[i-1]==Y[j-1]){
+            ans += X[i-1];
+            i--;
+            j--;
+        }else if(dp[i-1][j] > dp[i][j-1]){
+            i--;
+        }else{
+            j--;
+        }
+    }
+    reverse(ans.begin(),ans.end());
+    return ans;
+}
+
 
 int main(){
     string X = "abecdef";
-    string Y = "abcefdxf";
+    string Y = "abc";
     int i = X.length();
     int j = Y.length();
     memset(dp,-1,sizeof(dp));
 
-    cout << LCS_memoization(X,Y,i,j) << endl;
+    // cout << LCS_memoization(X,Y,i,j) << endl;
     cout << LCS_tabulation(X,Y,i,j) << endl;
+
+    cout << LCS_print(X,Y,i,j) <<endl;
 
     return 0;
 }
