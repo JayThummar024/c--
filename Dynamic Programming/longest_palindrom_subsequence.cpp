@@ -27,7 +27,7 @@ int main(){
     string s1 = "gabaaccba";
     string s2(s1);
     reverse(s2.begin(),s2.end());
-    cout<<s2<<endl;
+    // cout<<s2<<endl;
 
     cout<<LPS(s1,s2,s1.length(),s2.length());
     return 0;

@@ -26,7 +26,7 @@ int LCS(string X,string Y,int i,int j){
 
 
 int main(){
-    string s = "mbadm";
+    string s = "acbdbda";
     string s2(s);
     reverse(s.begin(),s.end());
     int i = s.length();
