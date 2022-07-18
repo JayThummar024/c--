@@ -43,60 +43,33 @@ void err(istream_iterator<string> it, T a, Args... args) {
 cout << *it << " = " << a << endl;
 err(++it, args...);
 }
-int merge(vector<int> &arr , int s , int e){
-    vector<int> temp;
-    int i = s;
-    int mid = (s+e)/2;
-    int j = mid+1;
-    int count = 0;
-    while(i<=mid and j<=e){
-        if(arr[i] < arr[j]){
-            temp.push_back(arr[i]);
-            i++;
-        }else{
-            temp.push_back(arr[j]);
-            j++;
-            count += mid-i+1;
-        }
-    }
-    while(i<=mid){
-        temp.push_back(arr[i]);
-        i++;
-    }
-    while(j<=e){
-        temp.push_back(arr[j]);
-        j++;
-    }
-    int k = 0;
-    for( int idx =s; idx<=e ; idx++ ){
-        arr[idx] = temp[k++];
-    }
-
-    return count;
-}
-
-int inversionCount(vector<int> &arr , int s,int e){
-
-    if(s>=e) return 0;
-
-    int mid = (s+e)/2;
-
-    int c1 = inversionCount(arr,s,mid);
-    int c2 = inversionCount(arr,mid+1,e);
-    int CI = merge(arr,s,e);
-
-    return c1 + c2 + CI;
-}
 
 int main(){
     _fast
-    vector<int> arr{2,5,1,3,4};
+    vvi mat{{1,2,3,5},{6,7,8,9},{10,11,12,15},{16,17,19,22}};
+    int target = 100;
+    int n = mat.size()-1;
+    int m = mat[0].size()-1;
 
-    int s = 0;
-    int e = arr.size()-1;
+    int lo = 0;
+    int hi = (m*n)-1;
 
-    cout<<inversionCount(arr,s,e);
+    while(lo<=hi){
+
+        int mid = (lo + (hi - lo) / 2);
     
+        if(mat[mid/m][mid%m]==target){
+            cout<<"True";
+            return 1;
+        }
+        if (mat[mid / m][mid % m]>target){
+            hi = mid - 1;
+        }else{
+            lo = mid + 1;
+        }
+    }
+    cout<<"False";
+
 
     return 0;
 }

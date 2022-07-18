@@ -43,60 +43,48 @@ void err(istream_iterator<string> it, T a, Args... args) {
 cout << *it << " = " << a << endl;
 err(++it, args...);
 }
-int merge(vector<int> &arr , int s , int e){
-    vector<int> temp;
-    int i = s;
-    int mid = (s+e)/2;
-    int j = mid+1;
-    int count = 0;
-    while(i<=mid and j<=e){
-        if(arr[i] < arr[j]){
-            temp.push_back(arr[i]);
-            i++;
-        }else{
-            temp.push_back(arr[j]);
-            j++;
-            count += mid-i+1;
-        }
-    }
-    while(i<=mid){
-        temp.push_back(arr[i]);
-        i++;
-    }
-    while(j<=e){
-        temp.push_back(arr[j]);
-        j++;
-    }
-    int k = 0;
-    for( int idx =s; idx<=e ; idx++ ){
-        arr[idx] = temp[k++];
-    }
-
-    return count;
-}
-
-int inversionCount(vector<int> &arr , int s,int e){
-
-    if(s>=e) return 0;
-
-    int mid = (s+e)/2;
-
-    int c1 = inversionCount(arr,s,mid);
-    int c2 = inversionCount(arr,mid+1,e);
-    int CI = merge(arr,s,e);
-
-    return c1 + c2 + CI;
-}
 
 int main(){
     _fast
-    vector<int> arr{2,5,1,3,4};
-
-    int s = 0;
-    int e = arr.size()-1;
-
-    cout<<inversionCount(arr,s,e);
     
+    vector<int> nums{1,0,-1,0,-2,2};
+    int target = 0;
+
+    sort(nums.begin(),nums.end());
+
+    vector<vector<int>> result;
+
+    for(int i=0;i<nums.size();i++){
+        int target_1 = target - nums[i];
+        for(int j=i+1 ; j<nums.size() ; j++){
+            int target_2 = target_1 - nums[j];
+
+            int lo = j+1 , hi = nums.size()-1;
+
+            while(lo<hi){
+                int two_sum = nums[lo] + nums[hi];
+                if(two_sum < target_2) lo++;
+                else if(two_sum > target_2) hi--;
+                else {
+                    vector<int> temp(4,0);
+                    temp[0] = nums[i];
+                    temp[1] = nums[j];
+                    temp[2] = nums[lo];
+                    temp[3] = nums[hi];
+                    result.push_back(temp);
+                
+                    while( lo<hi and nums[lo] == temp[2] ) ++lo;
+                    while( lo<hi and nums[hi] == temp[3] ) --hi;
+                }
+            }
+            while( j+1<nums.size()-1 and nums[j]==nums[j+1]) j++;
+        }
+        while (i + 1 < nums.size() - 1 and nums[i] == nums[i+1]) i++;
+    }
+
+    loop(i,0,result.size()-1){
+        logarr(result[i],0,result[i].size()-1);
+    }
 
     return 0;
 }

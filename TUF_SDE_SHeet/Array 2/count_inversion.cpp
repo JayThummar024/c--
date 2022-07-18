@@ -43,60 +43,50 @@ void err(istream_iterator<string> it, T a, Args... args) {
 cout << *it << " = " << a << endl;
 err(++it, args...);
 }
-int merge(vector<int> &arr , int s , int e){
-    vector<int> temp;
-    int i = s;
-    int mid = (s+e)/2;
-    int j = mid+1;
-    int count = 0;
-    while(i<=mid and j<=e){
-        if(arr[i] < arr[j]){
-            temp.push_back(arr[i]);
-            i++;
+
+int merge(vi &arr,vi &temp,int left,int mid,int right){
+    int inv_count = 0;
+    int i =left;
+    int j =mid;
+    int k =left;
+    while( (i<=mid-1) and (j<=right) ){
+        if(arr[i] <= arr[j]){
+            temp[k++] = arr[i++];
         }else{
-            temp.push_back(arr[j]);
-            j++;
-            count += mid-i+1;
+            temp[k++] = arr[j++];
+            inv_count += (mid - i);
         }
     }
-    while(i<=mid){
-        temp.push_back(arr[i]);
-        i++;
-    }
-    while(j<=e){
-        temp.push_back(arr[j]);
-        j++;
-    }
-    int k = 0;
-    for( int idx =s; idx<=e ; idx++ ){
-        arr[idx] = temp[k++];
-    }
+    while (i <= mid - 1) temp[k++] = arr[i++];
 
-    return count;
+    while (j <= right) temp[k++] = arr[j++];
+
+    for (i = left; i <= right; i++) arr[i] = temp[i];
+
+    return inv_count;
 }
 
-int inversionCount(vector<int> &arr , int s,int e){
+int merge_sort(vi &arr, vi &temp, int left, int right)
+{
+    int mid,inv_count = 0;
+    if(right > left){
+        
+        mid = (right+left)/2;
 
-    if(s>=e) return 0;
+        inv_count += merge_sort(arr,temp,left,mid);
+        inv_count += merge_sort(arr,temp,mid+1,right);
 
-    int mid = (s+e)/2;
-
-    int c1 = inversionCount(arr,s,mid);
-    int c2 = inversionCount(arr,mid+1,e);
-    int CI = merge(arr,s,e);
-
-    return c1 + c2 + CI;
+        inv_count += merge(arr,temp,left,mid+1,right);
+    }
+    return inv_count;
 }
 
 int main(){
     _fast
-    vector<int> arr{2,5,1,3,4};
 
-    int s = 0;
-    int e = arr.size()-1;
-
-    cout<<inversionCount(arr,s,e);
-    
+    vi arr{2,5,1,3,4};
+    vi temp(arr.size()+1,0);
+    cout<<merge_sort(arr,temp,0,arr.size()-1);
 
     return 0;
 }

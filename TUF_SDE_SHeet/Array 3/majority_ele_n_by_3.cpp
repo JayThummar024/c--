@@ -43,60 +43,51 @@ void err(istream_iterator<string> it, T a, Args... args) {
 cout << *it << " = " << a << endl;
 err(++it, args...);
 }
-int merge(vector<int> &arr , int s , int e){
-    vector<int> temp;
-    int i = s;
-    int mid = (s+e)/2;
-    int j = mid+1;
-    int count = 0;
-    while(i<=mid and j<=e){
-        if(arr[i] < arr[j]){
-            temp.push_back(arr[i]);
-            i++;
-        }else{
-            temp.push_back(arr[j]);
-            j++;
-            count += mid-i+1;
-        }
-    }
-    while(i<=mid){
-        temp.push_back(arr[i]);
-        i++;
-    }
-    while(j<=e){
-        temp.push_back(arr[j]);
-        j++;
-    }
-    int k = 0;
-    for( int idx =s; idx<=e ; idx++ ){
-        arr[idx] = temp[k++];
-    }
-
-    return count;
-}
-
-int inversionCount(vector<int> &arr , int s,int e){
-
-    if(s>=e) return 0;
-
-    int mid = (s+e)/2;
-
-    int c1 = inversionCount(arr,s,mid);
-    int c2 = inversionCount(arr,mid+1,e);
-    int CI = merge(arr,s,e);
-
-    return c1 + c2 + CI;
-}
 
 int main(){
     _fast
-    vector<int> arr{2,5,1,3,4};
-
-    int s = 0;
-    int e = arr.size()-1;
-
-    cout<<inversionCount(arr,s,e);
     
+    vi nums{3,1,2,3,1,1,4,3,3,2,3,1,2,1};
+    int sz=nums.size();
+
+    int n1,n2,c1=0,c2=0;
+
+    for(int i=0;i<sz;i++){
+        if (n1 == nums[i]){
+            c1 += 1;
+        }else if (n2 == nums[i]){
+            c2 += 1;
+        }else if (c1 == 0){
+            n1=nums[i];
+            c1 += 1;
+        }else if (c2 == 0){
+            n2=nums[i];
+            c2 += 1;
+        }else{
+            c1--;
+            c2--;
+        }
+    }
+
+    int count1=0, count2=0;
+    vector<int> ans;
+
+    for(int i=0;i<sz;i++){
+        if(nums[i]==n1){
+            count1 += 1;
+        }else if(nums[i]==n2){
+            count2 += 1;
+        }
+    }
+
+    cout<<n1<<" "<<n2<<endl;
+
+    if (count1 > sz / 3)
+        ans.push_back(n1);
+    if (count2 > sz / 3)
+        ans.push_back(n2);
+
+    logarr(ans,0,ans.size());
 
     return 0;
 }

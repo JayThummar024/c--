@@ -43,60 +43,56 @@ void err(istream_iterator<string> it, T a, Args... args) {
 cout << *it << " = " << a << endl;
 err(++it, args...);
 }
-int merge(vector<int> &arr , int s , int e){
+
+int merge(vector<int> &nums,int left, int mid,int right){
+    int hi=mid;
+
+    int total = 0;
+
+    for (int lo = left; lo < mid; lo++){
+        while ( hi <= right && nums[lo] > 2LL * nums[hi]) {
+            hi++;
+        }
+        total += (hi - mid);
+    }
+
     vector<int> temp;
-    int i = s;
-    int mid = (s+e)/2;
-    int j = mid+1;
-    int count = 0;
-    while(i<=mid and j<=e){
-        if(arr[i] < arr[j]){
-            temp.push_back(arr[i]);
-            i++;
+    int i = left , j = mid;
+
+    while( (i<=mid-1) and (j<=right) ){
+        if(nums[i] > nums[j]){
+            temp.push_back(nums[j++]);
         }else{
-            temp.push_back(arr[j]);
-            j++;
-            count += mid-i+1;
+            temp.push_back(nums[i++]);
         }
     }
-    while(i<=mid){
-        temp.push_back(arr[i]);
-        i++;
-    }
-    while(j<=e){
-        temp.push_back(arr[j]);
-        j++;
-    }
-    int k = 0;
-    for( int idx =s; idx<=e ; idx++ ){
-        arr[idx] = temp[k++];
-    }
 
-    return count;
+    while(i<mid) temp.push_back(nums[i++]);
+
+    while(j<=right) temp.push_back(nums[j++]);
+
+    for (int i = left; i <= right; i++) nums[i] = temp[i-left];
+
+    return total;
 }
 
-int inversionCount(vector<int> &arr , int s,int e){
+    int merge_sort(vector<int> &nums, int left, int right)
+{
+    int mid , rev_count = 0;
+    if(left>=right) return 0;
+    mid = (left+right)/2;
+    rev_count += merge_sort(nums,left,mid);
+    rev_count += merge_sort(nums,mid+1,right);
+    rev_count += merge(nums,left,mid+1,right);
 
-    if(s>=e) return 0;
-
-    int mid = (s+e)/2;
-
-    int c1 = inversionCount(arr,s,mid);
-    int c2 = inversionCount(arr,mid+1,e);
-    int CI = merge(arr,s,e);
-
-    return c1 + c2 + CI;
+    return rev_count;
 }
 
 int main(){
     _fast
-    vector<int> arr{2,5,1,3,4};
 
-    int s = 0;
-    int e = arr.size()-1;
-
-    cout<<inversionCount(arr,s,e);
-    
+    vector<int> nums{1,3,2,3,1};
+    cout<<merge_sort(nums,0,nums.size()-1);
 
     return 0;
 }
